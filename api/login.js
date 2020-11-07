@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
         });
       else
         res.status(500).send({
-          message: "Failes",
+          message: "Failed",
           details: "Login Failed"
         });
     } else throw "Email or password missing";
