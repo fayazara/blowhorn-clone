@@ -42,7 +42,7 @@
         ></span>
         <input
           type="text"
-          v-model="pickup"
+          v-model="booking.pickup"
           placeholder="Pickup Area/Address"
           class="focus:outline-none w-full"
         />
@@ -53,16 +53,40 @@
         ></span>
         <input
           type="text"
-          v-model="dropoff"
+          v-model="booking.dropoff"
           placeholder="Dropoff Area/Address"
           class="focus:outline-none w-full"
         />
       </div>
     </div>
     <button
-      class="py-4 px-8 rounded-full font-bold mx-auto block bg-gradient-to-r from-blue-500 to-purple-500 text-white"
+      :class="loading ? 'opacity-50 cursor-not-allowed' : null"
+      :disabled="loading"
+      @click="bookTruck"
+      class="py-4 px-8 rounded-full font-bold mx-auto bg-gradient-to-r from-blue-500 to-purple-500 text-white flex items-center"
     >
-      Book My Truck
+      <svg
+        v-if="loading"
+        class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        ></path>
+      </svg>
+      <span> Book My Truck </span>
     </button>
     <svg
       class="animate-bounce w-5 h-5 text-white mx-auto"
@@ -83,17 +107,33 @@
 export default {
   data() {
     return {
+      loading: false,
       selected: "on-demand",
       count: 0,
       cityRotate: ["Bangalore", "Mumbai", "Chennai", "Delhi", "Hyderabad"],
-      pickup: null,
-      dropoff: null,
-      city: null,
+      booking: {
+        pickup: null,
+        dropoff: null,
+        city: null,
+      },
     };
   },
   methods: {
     setCity(payload) {
-      this.city = payload;
+      this.booking.city = payload;
+    },
+    async bookTruck() {
+      try {
+        if (this.booking.city && this.booking.pickup && this.booking.dropoff) {
+          this.loading = true;
+          const { data } = await this.$axios.post("/api/book", this.booking);
+          this.$toast.success(data.details);
+          this.loading = false;
+        } else throw "Please enter all the fields";
+      } catch (err) {
+        this.loading = false;
+        this.$toast.error(err);
+      }
     },
   },
   mounted() {

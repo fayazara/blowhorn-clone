@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   try {
     const { body } = req;
     if (body.email && body.password) {
-      if (Math.random() >= 0.5)
+      if (body.email === "admin@test.com" && body.password === "password")
         res.status(200).send({
           message: "Succesful",
           details: "Login Succesful"
@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       else
         res.status(500).send({
           message: "Failed",
-          details: "Login Failed"
+          details: "Invalid Username or Password"
         });
     } else throw "Email or password missing";
   } catch (err) {

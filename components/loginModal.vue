@@ -144,7 +144,8 @@ export default {
         this.$toast.success("Logged In");
         this.$modal.hide("login");
       } catch (err) {
-        this.$toast.error(err);
+        this.loading = false;
+        this.$toast.error(err.response.data.details);
       }
     },
     close() {

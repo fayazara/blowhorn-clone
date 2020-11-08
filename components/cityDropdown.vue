@@ -42,7 +42,7 @@
     >
       <ul
         v-if="isOpen"
-        class="divide-y rounded-lg bg-white absolute mt-2 left-0 w-full z-20 overflow-hidden"
+        class="divide-y rounded-lg bg-white absolute mt-2 left-0 w-full shadow-lg z-20 overflow-hidden"
       >
         <li v-for="(city, i) in cities" :key="i">
           <button

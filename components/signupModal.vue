@@ -198,9 +198,10 @@ export default {
       try {
         this.loading = true;
         const { data } = await this.$axios.post("/api/signup", this.user);
-        this.$toast.success("Succesful");
+        this.$toast.success(data.details);
         this.$modal.hide("sign-up");
       } catch (err) {
+        this.loading = false;
         this.$toast.error(err);
       }
     },

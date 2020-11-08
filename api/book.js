@@ -3,7 +3,7 @@ const axios = require("axios");
 module.exports = async (req, res) => {
   try {
     const { body } = req;
-    if (body.city && body.pickup && body.drop) {
+    if (body.city && body.pickup && body.dropoff) {
       const { data } = await axios.post(
         "https://jsonbox.io/box_bcbed7702974818a29b3",
         body
